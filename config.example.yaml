@@ -27,21 +27,13 @@ items:
   - name: Run
     key: space
     command: command-prompt
-  - name: Last window
-    key: tab
-    command: last-window
-  - name: Last pane
-    key: "`"
-    command: last-pane
-  - name: Copy
-    key: c
-    menu:
-      - name: Copy
-        key: c
-        command: copy-mode
-      - name: List buffers
-        key: "#"
-        command: list-buffers
+  - separator: true
+  - name: Next window
+    key: l
+    command: next-window
+  - name: Previous window
+    key: h
+    command: previous-window
   - separator: true
   - name: +Windows
     key: w
@@ -52,15 +44,22 @@ items:
       - name: Choose
         key: w
         command: choose-tree -Zw
-      - name: Previous
-        key: p
-        command: previous-window
-      - name: Next
-        key: n
-        command: next-window
+      - name: index
+        key: i
+        command: command-prompt -p index "select-window -t ':%%'"
+      - separator: true
       - name: New
         key: c
         command: "neww -c #{pane_current_path}"
+      - name: New (named)
+        key: C
+        command: 'command-prompt -p "Name:" "neww -n ''%%'' -c #{pane_current_path}"'
+      - name: Rename
+        key: ","
+        command: command-prompt -I "#W" "renamew -- \"%%\""
+      - name: Delete
+        key: d
+        command: 'confirm -p "Kill window #W? (y/n)" killw'
       - separator: true
       - name: +Layout
         key: l
@@ -71,11 +70,11 @@ items:
             transient: true
           - name: Tiled
             key: t
-            command: selectnl tiled
-          - name: Horizontal
+            command: selectl tiled
+          - name: Horizontal even
             key: h
             command: selectl even-horizontal
-          - name: Vertical
+          - name: Vertical even
             key: v
             command: selectl even-vertical
           - name: Horizontal main
@@ -84,53 +83,36 @@ items:
           - name: Vertical main
             key: V
             command: selectl main-vertical
-      - name: Split horizontal
-        key: /
-        command: "splitw -h -c #{pane_current_path}"
-      - name: Split vertical
-        key: "-"
-        command: "splitw -v -c #{pane_current_path}"
-      - name: Rotate
-        key: o
-        command: rotatew
-        transient: true
-      - name: Rotate reverse
-        key: O
-        command: rotatew -D
-        transient: true
-      - separator: true
-      - name: Rename
-        key: R
-        command: command-prompt -I "#W" "renamew -- \"%%\""
-      - name: Kill
-        key: X
-        command: 'confirm -p "Kill window #W? (y/n)" killw'
+      - name: +Move
+        key: m
+        menu:
+          - name: Move left
+            key: h
+            command: "swap-window -t -1\\; select-window -t -1"
+            transient: true
+          - name: Move right
+            key: l
+            command: "swap-window -t +1\\; select-window -t +1"
+            transient: true
   - name: +Panes
     key: p
     menu:
       - name: Last
         key: tab
         command: lastp
-      - name: Choose
-        key: p
-        command: displayp -d 0
-      - separator: true
-      - name: Left
-        key: h
-        command: selectp -L
-      - name: Down
-        key: j
-        command: selectp -D
-      - name: Up
-        key: k
-        command: selectp -U
-      - name: Right
-        key: l
-        command: selectp -R
-      - separator: true
       - name: Zoom
         key: z
         command: resizep -Z
+      - name: Break
+        key: b
+        command: break-pane
+      - name: Delete
+        key: d
+        command: kill-pane
+      - name: Capture
+        key: C
+        command: capture-pane
+      - separator: true
       - name: +Resize
         key: r
         menu:
@@ -167,62 +149,47 @@ items:
             command: resizep -R 10
             transient: true
       - name: Swap left
-        key: H
+        key: h
         command: swapp -t "{left-of}"
       - name: Swap down
-        key: J
+        key: j
         command: swapp -t "{down-of}"
       - name: Swap up
-        key: K
+        key: k
         command: swapp -t "{up-of}"
       - name: Swap right
-        key: L
-        command: swapp -t "{right-of}"
-      - name: Break
-        key: "!"
-        command: break-pane
-      - separator: true
-      - name: Mark
-        key: m
-        command: selectp -m
-      - name: Unmark
-        key: M
-        command: selectp -M
-      - name: Capture
-        key: C
-        command: capture-pane
-      - name: Respawn pane
-        key: R
-        macro: restart-pane
-      - name: Kill
-        key: X
-        command: 'confirm -p "Kill pane #P? (y/n)" killp'
-  - name: +Buffers
-    key: b
-    menu:
-      - name: Choose
-        key: b
-        command: choose-buffer -Z
-      - name: List
         key: l
-        command: lsb
-      - name: Paste
-        key: p
-        command: pasteb
-  - name: +Sessions
+        command: swapp -t "{right-of}"
+  - name: +Sessions/split
     key: s
     menu:
       - name: Choose
         key: s
         command: choose-tree -Zs
       - name: New
-        key: N
+        key: n
         command: new
+      - name: New (named)
+        key: N
+        command: command-prompt -p "Session Name:" "new-session -d -s '%%'"
       - name: Rename
-        key: r
+        key: ","
         command: rename
+      - separator: true
+      - name: Split right
+        key: l
+        command: split-window -h
+      - name: Split left
+        key: h
+        command: split-window -h -b
+      - name: Split down
+        key: j
+        command: split-window
+      - name: Split up
+        key: k
+        command: split-window -v -b
   - name: +Client
-    key: C
+    key: c
     menu:
       - name: Choose
         key: c
@@ -245,16 +212,13 @@ items:
         menu:
           - name: Install
             key: i
-            command:
-              run-shell $TMUX_PLUGIN_MANAGER_PATH/tpm/bindings/install_plugins
+            command: run-shell $TMUX_PLUGIN_MANAGER_PATH/tpm/bindings/install_plugins
           - name: Update
             key: u
-            command:
-              run-shell $TMUX_PLUGIN_MANAGER_PATH/tpm/bindings/update_plugins
+            command: run-shell $TMUX_PLUGIN_MANAGER_PATH/tpm/bindings/update_plugins
           - name: Clean
             key: c
-            command:
-              run-shell $TMUX_PLUGIN_MANAGER_PATH/tpm/bindings/clean_plugins
+            command: run-shell $TMUX_PLUGIN_MANAGER_PATH/tpm/bindings/clean_plugins
       - name: Detach
         key: D
         command: detach
