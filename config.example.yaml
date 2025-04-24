@@ -167,10 +167,10 @@ items:
         key: s
         command: choose-tree -Zs
       - name: New
-        key: n
+        key: c
         command: new
       - name: New (named)
-        key: N
+        key: C
         command: command-prompt -p "Session Name:" "new-session -d -s '%%'"
       - name: Rename
         key: ","
