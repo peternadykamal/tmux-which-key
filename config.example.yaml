@@ -174,7 +174,7 @@ items:
         command: command-prompt -p "Session Name:" "new-session -s '%%'"
       - name: Rename
         key: ","
-        command: rename
+        command: command-prompt -I "#S" "rename-session -- \"%%\""
       - name: Delete
         key: d
         command: kill-session
