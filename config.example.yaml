@@ -59,7 +59,7 @@ items:
         command: command-prompt -I "#W" "renamew -- \"%%\""
       - name: Delete
         key: d
-        command: 'confirm -p "Kill window #W? (y/n)" killw'
+        command: kill-window
       - separator: true
       - name: +Layout
         key: l
@@ -171,10 +171,13 @@ items:
         command: new
       - name: New (named)
         key: C
-        command: command-prompt -p "Session Name:" "new-session -d -s '%%'"
+        command: command-prompt -p "Session Name:" "new-session -s '%%'"
       - name: Rename
         key: ","
         command: rename
+      - name: Delete
+        key: d
+        command: kill-session
       - separator: true
       - name: Split right
         key: l
