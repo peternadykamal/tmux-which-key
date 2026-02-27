@@ -181,16 +181,16 @@ items:
       - separator: true
       - name: Split right
         key: l
-        command: split-window -h
+        command: "split-window -h -c #{pane_current_path}"
       - name: Split left
         key: h
-        command: split-window -h -b
+        command: "split-window -h -b -c #{pane_current_path}"
       - name: Split down
         key: j
-        command: split-window
+        command: "split-window -c #{pane_current_path}"
       - name: Split up
         key: k
-        command: split-window -v -b
+        command: "split-window -v -b -c #{pane_current_path}"
   - name: +Client
     key: c
     menu:
