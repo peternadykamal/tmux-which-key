@@ -50,10 +50,10 @@ items:
       - separator: true
       - name: New
         key: c
-        command: "neww -c #{pane_current_path}"
+        command: neww
       - name: New (named)
         key: C
-        command: 'command-prompt -p "Name:" "neww -n ''%%'' -c #{pane_current_path}"'
+        command: 'command-prompt -p "Name:" "neww -n ''%%''"'
       - name: Rename
         key: ","
         command: command-prompt -I "#W" "renamew -- \"%%\""
