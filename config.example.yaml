@@ -50,10 +50,10 @@ items:
       - separator: true
       - name: New
         key: c
-        command: neww
+        command: neww -c "$HOME"
       - name: New (named)
         key: C
-        command: 'command-prompt -p "Name:" "neww -n ''%%''"'
+        command: 'command-prompt -p "Name:" "neww -n ''%%'' -c \"$HOME\""'
       - name: Rename
         key: ","
         command: command-prompt -I "#W" "renamew -- \"%%\""

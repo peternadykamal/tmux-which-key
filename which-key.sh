@@ -46,7 +46,7 @@ Windows)
         Choose w 'choose-tree -Zw' \
         Previous p prev \
         Next n next \
-        New c 'neww -c "#{pane_current_path}"' \
+        New c 'neww -c "$HOME"' \
         '' \
         +Layout l "run '$cmd_show_menu Layout'" \
         'Split horizontal' / 'splitw -h -c "#{pane_current_path}"' \

@@ -45,7 +45,7 @@ set -g @wk_menu_windows \
 Choose "w" "choose-tree -Zw" \
 Previous "p" previous-window \
 Next "n" next-window \
-New "c" "neww -c #{pane_current_path}" \
+New "c" "neww -c \"$HOME\"" \
 "" \
 "+Layout" "l" "show-wk-menu #{@wk_menu_layout}" \
 "Split horizontal" "/" "splitw -h -c #{pane_current_path}" \
